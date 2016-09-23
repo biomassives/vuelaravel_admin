@@ -1,0 +1,161 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+
+  
+  
+
+  
+  
+  
+
+  
+
+  <script type="text/javascript" src="/js/lib/dummy.js"></script>
+
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+
+  
+    
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.15/vue.min.js"></script>
+    
+  
+    
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-alpha1/jquery.min.js"></script>
+    
+  
+    
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css">
+    
+  
+    
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    
+  
+
+  <style type="text/css">
+    
+  </style>
+
+  <title></title>
+
+  
+    
+
+
+
+
+<script type='text/javascript'>//<![CDATA[
+window.onload=function(){
+var vm = new Vue({
+    data: {
+        shiftEntry: {
+            role: "",
+            member: "",
+            observer: {
+                firstName: "",
+                lastName: ""
+            }
+        }
+    },
+    computed: {
+        observerShift: function()
+        {
+            return this.shiftEntry.role == 'observer';
+        },
+        validation: function () {
+            var validationRules = {
+                role: this.shiftEntry.role != ''
+            };
+
+            if (this.observerShift) {
+                validationRules.observerFirstName = !!this.shiftEntry.observer.firstName.trim();
+                validationRules.observerLastName = !!this.shiftEntry.observer.lastName.trim();
+            } else {
+                validationRules.member = this.shiftEntry.member != '';
+            }
+
+            return validationRules;
+        },
+        isValid: function () {
+            var validation = this.validation;
+            return Object.keys(validation).every(function (key) {
+                return validation[key]
+            })
+        }
+    },
+    methods: {
+        changeRole: function()
+        {
+            this.shiftEntry.member = "";
+            this.shiftEntry.observer.firstName = "";
+            this.shiftEntry.observer.lastName = "";
+        }
+    }
+}).$mount('#shiftEntry');
+}//]]> 
+
+</script>
+
+  
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+        <div id="shiftEntry" class="col-lg-12">
+            <form action="" v-on="sumbit:validateForm">
+                <div class="form-group">
+                    <label for="shiftEntryRole">Role:</label>
+                    <select name="shiftEntryRole" id="shiftEntryRole" class="form-control" v-model="shiftEntry.role" v-on="change:changeRole">
+                        <option value="">Select</option>
+                        <option value="aic">AIC</option>
+                        <option value="driver">Driver</option>
+                        <option value="observer">Observer</option>
+                    </select>
+                    <div class="help-block">Change to Observer to toggle validation boolean</div>
+                </div>
+                <div class="form-group" v-if="!observerShift"
+                     v-class="has-error: !validation.member, has-success: validation.member">
+                    <label for="shiftEntryMember">Member:</label>
+                    <select name="shiftEntryMember" id="shiftEntryMember" class="form-control" v-model="shiftEntry.member">
+                        <option value="">Select</option>
+                        <option value="1">Benjamin</option>
+                        <option value="2">Rebecca</option>
+                    </select>
+                </div>
+                <div class="form-group" v-if="observerShift"
+                     v-class="has-error: !validation.observerFirstName, has-success: validation.observerFirstName">
+                    <label for="shiftEntryObserverFirstName">First Name:</label>
+                    <input type="text" id="shiftEntryObserverFirstName" class="form-control" v-model="shiftEntry.observer.firstName">
+                </div>
+                <div class="form-group" v-if="observerShift"
+                     v-class="has-error: !validation.observerLastName, has-success: validation.observerLastName">
+                    <label for="shiftEntryObserverLastName">Last Name:</label>
+                    <input type="text" id="shiftEntryObserverLastName" class="form-control" v-model="shiftEntry.observer.lastName">
+                </div>
+                <button type="submit" class="btn btn-success" v-attr="disabled: !isValid">Save</button>
+            </form> <hr> <pre>{{ $data | json }}</pre>
+
+        </div>
+    </div>
+</div>
+  
+</body>
+
+</html>
+
+
